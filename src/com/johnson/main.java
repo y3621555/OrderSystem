@@ -3,9 +3,9 @@ package com.johnson;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-class Item{
+class ItemList{
     int itemID;
-    String name;
+    String itemName;
     int Price;
 
     public void setItemID(int itemID) {
@@ -13,7 +13,7 @@ class Item{
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.itemName = name;
     }
 
     public void setPrice(int Price) {
@@ -29,7 +29,12 @@ class Item{
     }
 
     public String getName() {
-        return name;
+        return itemName;
+    }
+
+    @Override
+    public String toString(){
+        return String.format( itemID + " " + itemName + " " + Price);
     }
 }
 class Utils{
@@ -37,8 +42,8 @@ class Utils{
     public void ShowMenu(){
         System.out.println("<菜單>");
         System.out.println("代號(itemID)  品名(itemName)    單價(unitPrice)");
-        System.out.println("1001         阿薩姆奶茶           55");
-        System.out.println("1002         珍珠奶              65");
+        System.out.println("1001         阿薩姆奶茶          55");
+        System.out.println("1002         珍珠奶茶            65");
         System.out.println("1005         茉香綠茶            35");
         System.out.println("1007         烏梅汁              45");
         System.out.println("1008         黑咖啡(美式)         40");
@@ -50,11 +55,6 @@ class Utils{
 class Order{
     int itemID;
     int amount;
-
-    /*Order( int itemID, int amount ){
-        this.itemID = itemID;
-        this.amount = amount;
-    }*/
 
     public int getItemID() {
         return itemID;
@@ -73,20 +73,21 @@ class Order{
     }
 
     @Override
-    public String toString() {
-        return "Order{" +
-                "itemID=" + itemID +
-                ", amount=" + amount +
-                '}';
+    public String toString(){
+        return String.format("ID: " + itemID + " 數量: " + amount);
     }
 }
 
+
 public class main {
+    public static ArrayList<Order> OrderList = new ArrayList<Order>();
+    public static ArrayList<ItemList> itemLists = new ArrayList<ItemList>();
+    public static Order order = new Order();
+
     public static void main(String args[]) {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Order> OrderList = new ArrayList<Order>();
-        Order order = new Order();
         Utils utils = new Utils();
+
         System.out.println("<<<<< QQ 飲料店 點餐系統 >>>>>");
         System.out.print("(1) 建立訂單 (2) 離開: ");
         int number = scanner.nextInt();
@@ -96,10 +97,16 @@ public class main {
             System.out.print("(1) 建立訂單 (2) 離開: ");
             number = scanner.nextInt();
         }
+
+        /*for (ItemList itemList : itemLists){
+            System.out.println(itemList);
+        }*/
+
         if ( number == 1 ){
             // Create Order
             System.out.println("=======================================");
             utils.ShowMenu();
+            CreateMenu();
 
             System.out.print(">(1) 點餐 (2)完成 (3) 取消單項 (4) 取消訂單: ");
             int number1 = scanner.nextInt();
@@ -114,13 +121,18 @@ public class main {
                     System.out.print("輸入代號與數量: ");
                     int ItemID = scanner.nextInt();
                     int Amount = scanner.nextInt();
-                    order.setItemID(ItemID);
-                    order.setAmount(Amount);
+                    EnterOrder(ItemID,Amount);
 
-                    OrderList.add(order);
-                    //Collections.sort(students);
-                    for ( int i=0; i< OrderList.size(); ++i ){
-                        System.out.println(OrderList.get(i));
+
+                    for (Order order1: OrderList){
+                        int i = 1;
+                        String name = String.valueOf(order1.itemID);
+                        name = name.replace("1001", "阿薩姆奶茶").replace("1002", "珍珠奶茶");
+                        System.out.println("[" + i + "] " + name + " " + order1.amount);
+                        /*for (ItemList itemList : itemLists){
+                            System.out.println(itemList);
+                        }*/
+
                     }
 
                     System.out.print(">(1) 點餐 (2)完成 (3) 取消單項 (4) 取消訂單: ");
@@ -129,6 +141,11 @@ public class main {
 
                 }
                 else if ( number1 == 2 ){
+                    for (Order order1: OrderList){
+                        System.out.println(order1);
+                    }
+                    System.out.print(">(1) 點餐 (2)完成 (3) 取消單項 (4) 取消訂單: ");
+                    number1 = scanner.nextInt();
 
                 }
                 else if ( number1 == 3 ){
@@ -144,5 +161,52 @@ public class main {
         }
 
 
+    }
+
+    public static void CreateMenu(){
+        //1
+        ItemList itemList0 = new ItemList();
+        itemList0.itemID = 1001;
+        itemList0.itemName = "阿薩姆奶茶";
+        itemList0.Price = 55;
+        itemLists.add(itemList0);
+        //2
+        ItemList itemList1 = new ItemList();
+        itemList1.itemID = 1002;
+        itemList1.itemName = "珍珠奶茶";
+        itemList1.Price = 65;
+        itemLists.add(itemList1);
+        //3
+        ItemList itemList2 = new ItemList();
+        itemList2.itemID = 1005;
+        itemList2.itemName = "茉香綠茶";
+        itemList2.Price = 35;
+        itemLists.add(itemList2);
+        //4
+        ItemList itemList3 = new ItemList();
+        itemList3.itemID = 1007;
+        itemList3.itemName = "烏梅汁";
+        itemList3.Price = 45;
+        itemLists.add(itemList3);
+        //5
+        ItemList itemList4 = new ItemList();
+        itemList4.itemID = 1008;
+        itemList4.itemName = "黑咖啡(美式)";
+        itemList4.Price = 40;
+        itemLists.add(itemList4);
+        //6
+        ItemList itemList5 = new ItemList();
+        itemList5.itemID = 1009;
+        itemList5.itemName = "拿鐵";
+        itemList5.Price = 55;
+        itemLists.add(itemList5);
+
+    }
+
+    public static void EnterOrder(int ItemID, int Amount){
+        Order o = new Order();
+        o.itemID = ItemID;
+        o.amount = Amount;
+        OrderList.add(o);
     }
 }
