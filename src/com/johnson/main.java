@@ -87,6 +87,9 @@ public class main {
     public static void main(String args[]) {
         Scanner scanner = new Scanner(System.in);
         Utils utils = new Utils();
+        int TotalMoney=0;
+        int i = 0;
+        CreateMenu();
 
         System.out.println("<<<<< QQ 飲料店 點餐系統 >>>>>");
         System.out.print("(1) 建立訂單 (2) 離開: ");
@@ -102,11 +105,10 @@ public class main {
             System.out.println(itemList);
         }*/
 
-        if ( number == 1 ){
+        while ( number == 1 ){
             // Create Order
             System.out.println("=======================================");
             utils.ShowMenu();
-            CreateMenu();
 
             System.out.print(">(1) 點餐 (2)完成 (3) 取消單項 (4) 取消訂單: ");
             int number1 = scanner.nextInt();
@@ -118,6 +120,7 @@ public class main {
 
             while( number1 != 4 ){
                 if ( number1 == 1){
+                    i = 0;
                     System.out.print("輸入代號與數量: ");
                     int ItemID = scanner.nextInt();
                     int Amount = scanner.nextInt();
@@ -125,13 +128,21 @@ public class main {
 
 
                     for (Order order1: OrderList){
-                        int i = 1;
+
                         String name = String.valueOf(order1.itemID);
                         name = name.replace("1001", "阿薩姆奶茶").replace("1002", "珍珠奶茶");
-                        System.out.println("[" + i + "] " + name + " " + order1.amount);
-                        /*for (ItemList itemList : itemLists){
-                            System.out.println(itemList);
-                        }*/
+                        name = name.replace("1005", "茉香綠茶").replace("1007", "烏梅汁");
+                        name = name.replace("1008", "黑咖啡(美式)").replace("1009", "拿鐵");
+                        for (ItemList itemList : itemLists){
+                            if (itemList.itemID == order1.itemID){
+                                i+=1;
+                                System.out.println("[" + i + "] " + name + " " + itemList.Price + "x" + order1.amount + " " + itemList.Price*order1.amount);
+                            }
+
+                        }
+
+                        //System.out.println("[" + i + "] " + name + " " + order1.amount);
+
 
                     }
 
@@ -141,26 +152,72 @@ public class main {
 
                 }
                 else if ( number1 == 2 ){
+                    System.out.println("***** 列印明細 *****");
                     for (Order order1: OrderList){
-                        System.out.println(order1);
+
+                        String name = String.valueOf(order1.itemID);
+                        name = name.replace("1001", "阿薩姆奶茶").replace("1002", "珍珠奶茶");
+                        name = name.replace("1005", "茉香綠茶").replace("1007", "烏梅汁");
+                        name = name.replace("1008", "黑咖啡(美式)").replace("1009", "拿鐵");
+                        for (ItemList itemList : itemLists){
+                            if (itemList.itemID == order1.itemID){
+                                TotalMoney = TotalMoney + (itemList.Price*order1.amount);
+
+                                System.out.println(  name + " " + itemList.Price + "x" + order1.amount + " " + itemList.Price*order1.amount);
+                            }
+
+                        }
+
+                        //System.out.println("[" + i + "] " + name + " " + order1.amount);
                     }
-                    System.out.print(">(1) 點餐 (2)完成 (3) 取消單項 (4) 取消訂單: ");
-                    number1 = scanner.nextInt();
+                    System.out.println("總價 " + TotalMoney);
+                    OrderList.clear();
+                    TotalMoney = 0;
+                    System.out.print("(1) 建立訂單 (2) 離開: ");
+                    number = scanner.nextInt();
+                    break;
+
 
                 }
                 else if ( number1 == 3 ){
+                    i = 0;
+                    System.out.print(">>輸入編號: ");
+                    int Del_Number = scanner.nextInt();
+
+                    OrderList.remove(Del_Number-1);
+
+                    for (Order order1: OrderList){
+
+                        String name = String.valueOf(order1.itemID);
+                        name = name.replace("1001", "阿薩姆奶茶").replace("1002", "珍珠奶茶");
+                        name = name.replace("1005", "茉香綠茶").replace("1007", "烏梅汁");
+                        name = name.replace("1008", "黑咖啡(美式)").replace("1009", "拿鐵");
+                        for (ItemList itemList : itemLists){
+                            if (itemList.itemID == order1.itemID){
+                                i+=1;
+                                System.out.println("[" + i + "] " + name + " " + itemList.Price + "x" + order1.amount + " " + itemList.Price*order1.amount);
+                            }
+
+                        }
+
+                        //System.out.println("[" + i + "] " + name + " " + order1.amount);
+                    }
+
+                    System.out.print(">(1) 點餐 (2)完成 (3) 取消單項 (4) 取消訂單: ");
+                    number1 = scanner.nextInt();
+
 
                 }
             }
             System.out.println("退出系統");
+            OrderList.clear();
+            TotalMoney = 0;
 
         }
-        else {
-            // Stop System
+        // Stop System number2
+        if ( number == 2){
             System.out.println("離開");
         }
-
-
     }
 
     public static void CreateMenu(){
